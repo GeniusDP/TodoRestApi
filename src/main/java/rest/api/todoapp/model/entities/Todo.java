@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Todo {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private long id;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long todoId;
     private String title;
     private String body;
     private LocalDateTime creationDateTime;
@@ -24,12 +24,12 @@ public class Todo {
     public Todo() {
     }
 
-    public Todo(String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
+
+    public Todo(long todoId, String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
+        this.todoId = todoId;
         this.title = title;
         this.body = body;
         this.creationDateTime = creationDateTime;
         this.lastUpdateDateTime = lastUpdateDateTime;
     }
-
-
 }

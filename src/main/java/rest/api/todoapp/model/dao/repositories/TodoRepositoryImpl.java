@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("todoRepository")
+@Transactional
 public class TodoRepositoryImpl implements TodoRepository {
 
     @Autowired
@@ -23,20 +24,20 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    @Transactional
     public void updateTodo(long todoId) {
 
     }
 
     @Override
-    @Transactional
-    public void deleteTodo(long todoId) {
-
+    public int deleteTodo(long todoId) {
+        String sql = "DELETE FROM sandbox.public.todos WHERE todo_id = ?;";
+        return jdbcTemplate.update(sql, todoId);
     }
 
     @Override
-    public void saveTodo(Todo todo) {
-
+    public void saveTodo(String title, String body) {
+        String sql = "insert into sandbox.public.todos (title, body) values (?, ?);";
+        jdbcTemplate.update(sql, body);
     }
 
 }

@@ -18,4 +18,8 @@ public class TodoService {
         return repository.getAllTodos().orElse( Collections.emptyList() );
     }
 
+    public int deleteTodoById(long todoId){
+        return repository.deleteTodo(todoId);
+    }
+
 }
