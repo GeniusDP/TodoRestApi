@@ -15,20 +15,20 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Todo {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Long id;
+    private long id;
     private String title;
     private String body;
-    private LocalDateTime creationDate;
-    private LocalDateTime lastUpdateDate;
+    private LocalDateTime creationDateTime;
+    private LocalDateTime lastUpdateDateTime;
 
     public Todo() {
     }
 
-    public Todo(String title, String body, LocalDateTime creationDate, LocalDateTime lastUpdateDate) {
+    public Todo(String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
         this.title = title;
         this.body = body;
-        this.creationDate = creationDate;
-        this.lastUpdateDate = lastUpdateDate;
+        this.creationDateTime = creationDateTime;
+        this.lastUpdateDateTime = lastUpdateDateTime;
     }
 
 
