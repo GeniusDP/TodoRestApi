@@ -22,6 +22,9 @@ public class TodoController {
         return ResponseEntity.ok( service.getAllTodos() );
     }
 
+
+
+    
     @DeleteMapping("/todos/{todoId}")
     public ResponseEntity<String> deleteTodoById(@PathVariable long todoId){
         int rowsEffected = service.deleteTodoById(todoId);
