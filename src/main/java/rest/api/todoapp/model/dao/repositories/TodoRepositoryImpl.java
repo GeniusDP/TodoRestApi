@@ -24,8 +24,18 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public void updateTodo(long todoId) {
+    public int updateTodo(long todoId, Optional<String> title, Optional<String> body) {
+        String sqlTitle = "UPDATE sandbox.public.todos SET title = ? WHERE todo_id = ?";
+        String sqlBody = "UPDATE sandbox.public.todos SET body = ? WHERE todo_id = ?";
+        int cnt = 0;
+        if( title.isPresent() ){
+            cnt += jdbcTemplate.update(sqlTitle, title.get(), todoId);
+        }
 
+        if( body.isPresent() ){
+            cnt += jdbcTemplate.update(sqlBody, body.get(), todoId);
+        }
+        return cnt > 0 ? 1 : 0;
     }
 
     @Override
@@ -36,7 +46,7 @@ public class TodoRepositoryImpl implements TodoRepository {
 
     @Override
     public void saveTodo(String title, String body) {
-        String sql = "insert into sandbox.public.todos (title, body) values (?, ?);";
+        String sql = "INSERT INTO sandbox.public.todos (title, body) VALUES (?, ?);";
         jdbcTemplate.update(sql, body);
     }
 

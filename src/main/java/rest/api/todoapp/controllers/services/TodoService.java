@@ -7,6 +7,7 @@ import rest.api.todoapp.model.entities.Todo;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -22,4 +23,7 @@ public class TodoService {
         return repository.deleteTodo(todoId);
     }
 
+    public int updateTodoById(long todoId, Optional<String> title, Optional<String> body) {
+        return repository.updateTodo(todoId, title, body);
+    }
 }

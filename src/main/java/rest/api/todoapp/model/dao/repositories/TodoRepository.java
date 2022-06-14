@@ -9,7 +9,7 @@ public interface TodoRepository {
 
     Optional<List<Todo>> getAllTodos();
 
-    void updateTodo(long todoId);
+    int updateTodo(long todoId, Optional<String> title, Optional<String> body);
 
     int deleteTodo(long todoId);
 
