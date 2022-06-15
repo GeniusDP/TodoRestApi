@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rest.api.todoapp.exceptions.NoElementsException;
+import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
 import rest.api.todoapp.services.dto.request.TodoRequestDTO;
 import rest.api.todoapp.services.TodoService;
 import rest.api.todoapp.model.entities.Todo;
@@ -20,6 +21,11 @@ public class TodoController {
     @GetMapping("/todos")
     public ResponseEntity<List<Todo>> getAllTodos() throws NoElementsException {
         return ResponseEntity.ok( service.getAllTodos() );
+    }
+
+    @GetMapping("/todos/paginated")
+    public ResponseEntity<List<Todo>> getPaginatedTodoList(PaginationRequestTodoDTO paginationDTO){
+        return ResponseEntity.ok( service.getPaginatedTodoList(paginationDTO) );
     }
 
     @PutMapping("/todos/{todoId}")
