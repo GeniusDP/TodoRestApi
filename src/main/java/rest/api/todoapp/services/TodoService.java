@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import rest.api.todoapp.exceptions.NoElementsException;
+import rest.api.todoapp.exceptions.NoSuchTodoException;
 import rest.api.todoapp.exceptions.NotAllParametersInUrlException;
 import rest.api.todoapp.model.dao.repositories.TodoRepository;
 import rest.api.todoapp.model.entities.Todo;
@@ -62,4 +63,11 @@ public class TodoService {
     }
 
 
+    public Todo getTodoById(UUID todoId) {
+        List<Todo> list = getAllTodos();
+        return list.stream()
+                .filter( todo -> todo.getTodoId().equals(todoId) )
+                .findAny()
+                .orElseThrow( () -> new NoSuchTodoException("Error! There is now todo with such todoId!"));
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import rest.api.todoapp.exceptions.NoSuchTodoException;
 import rest.api.todoapp.model.dao.extractors.AllTodosExtractor;
 import rest.api.todoapp.model.entities.Todo;
 
@@ -29,19 +30,26 @@ public class TodoRepositoryImpl implements TodoRepository {
     public UUID updateTodo(UUID todoId, Optional<String> title, Optional<String> body) {
         String sqlTitle = "UPDATE sandbox.public.todos SET title = ? WHERE todo_id = ?";
         String sqlBody = "UPDATE sandbox.public.todos SET body = ? WHERE todo_id = ?";
+        String sqlUpdateTime = "UPDATE sandbox.public.todos SET last_update_date_time = ? WHERE todo_id = ?";
 
         title.ifPresent(value -> jdbcTemplate.update(sqlTitle, value, todoId));
         body.ifPresent(value -> jdbcTemplate.update(sqlBody, value, todoId));
+        int rowsEffected = jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todoId);
 
-        String sqlUpdateTime = "UPDATE sandbox.public.todos SET last_update_date_time = ? WHERE todo_id = ?";
-        jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todoId);
+        if( rowsEffected == 0 ){
+            throw new NoSuchTodoException("Error! There is now todo with such todoId!");
+        }
+
         return todoId;
     }
 
     @Override
     public UUID deleteTodo(UUID todoId) {
         String sql = "DELETE FROM sandbox.public.todos WHERE todo_id = ?;";
-        jdbcTemplate.update(sql, todoId);
+        int rowsEffected = jdbcTemplate.update(sql, todoId);
+        if( rowsEffected == 0 ){
+            throw new NoSuchTodoException("Error! There is now todo with such todoId!");
+        }
         return todoId;
     }
 

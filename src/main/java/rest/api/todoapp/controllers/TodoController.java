@@ -15,13 +15,17 @@ import java.util.UUID;
 
 @RestController
 public class TodoController {
-
     @Autowired
     private TodoService service;
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Todo>> getAllTodos() throws NoElementsException {
+    public ResponseEntity<List<Todo>> getAllTodos() {
         return ResponseEntity.ok( service.getAllTodos() );
+    }
+
+    @GetMapping("/todos/{todoId}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable UUID todoId){
+        return ResponseEntity.ok( service.getTodoById(todoId) );
     }
 
     @GetMapping("/todos/paginated")
@@ -29,10 +33,14 @@ public class TodoController {
         return ResponseEntity.ok( service.getPaginatedTodoList(paginationDTO) );
     }
 
+    @PostMapping("/todos")
+    public ResponseEntity<UUID> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
+        UUID todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
+        return ResponseEntity.ok(todoId);
+    }
+
     @PutMapping("/todos/{todoId}")
-    public ResponseEntity<String> updateTodoById(@PathVariable UUID todoId,
-                                                 @RequestParam Optional<String> title,
-                                                 @RequestParam Optional<String> body){
+    public ResponseEntity<String> updateTodoById(@PathVariable UUID todoId, @RequestParam Optional<String> title, @RequestParam Optional<String> body){
         String message = String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
         return ResponseEntity.ok(message);
     }
@@ -41,12 +49,6 @@ public class TodoController {
     public ResponseEntity<String> deleteTodoById(@PathVariable UUID todoId){
         String message = String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
         return ResponseEntity.ok( message );
-    }
-
-    @PostMapping("/todos")
-    public ResponseEntity<UUID> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
-        UUID todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
-        return ResponseEntity.ok(todoId);
     }
 
 }
