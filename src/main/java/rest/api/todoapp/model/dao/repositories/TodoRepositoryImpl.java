@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import rest.api.todoapp.model.dao.extractors.AllTodosExtractor;
 import rest.api.todoapp.model.entities.Todo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,36 +19,36 @@ public class TodoRepositoryImpl implements TodoRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Optional<List<Todo>> getAllTodos() {
+    public List<Todo> getAllTodos() {
         String sql = "SELECT * FROM sandbox.public.todos;";
-        return Optional.ofNullable( jdbcTemplate.query( sql, new AllTodosExtractor() ) );
+        return jdbcTemplate.query( sql, new AllTodosExtractor() );
     }
 
     @Override
-    public int updateTodo(long todoId, Optional<String> title, Optional<String> body) {
+    public long updateTodo(long todoId, Optional<String> title, Optional<String> body) {
         String sqlTitle = "UPDATE sandbox.public.todos SET title = ? WHERE todo_id = ?";
         String sqlBody = "UPDATE sandbox.public.todos SET body = ? WHERE todo_id = ?";
-        int cnt = 0;
-        if( title.isPresent() ){
-            cnt += jdbcTemplate.update(sqlTitle, title.get(), todoId);
-        }
 
-        if( body.isPresent() ){
-            cnt += jdbcTemplate.update(sqlBody, body.get(), todoId);
-        }
-        return cnt > 0 ? 1 : 0;
+        title.ifPresent(value -> jdbcTemplate.update(sqlTitle, value, todoId));
+        body.ifPresent(value -> jdbcTemplate.update(sqlBody, value, todoId));
+
+        String sqlUpdateTime = "UPDATE sandbox.public.todos SET last_update_date_time = ? WHERE todo_id = ?";
+        jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todoId);
+        return todoId;
     }
 
     @Override
-    public int deleteTodo(long todoId) {
+    public long deleteTodo(long todoId) {
         String sql = "DELETE FROM sandbox.public.todos WHERE todo_id = ?;";
-        return jdbcTemplate.update(sql, todoId);
+        jdbcTemplate.update(sql, todoId);
+        return todoId;
     }
 
     @Override
-    public void saveTodo(String title, String body) {
+    public long saveTodo(String title, String body) {
         String sql = "INSERT INTO sandbox.public.todos (title, body) VALUES (?, ?);";
-        jdbcTemplate.update(sql, body);
+        jdbcTemplate.update(sql, title, body);
+        return getAllTodos().stream().filter( todo -> todo.getTitle().equals(title) ).findAny().get().getTodoId();
     }
 
 }

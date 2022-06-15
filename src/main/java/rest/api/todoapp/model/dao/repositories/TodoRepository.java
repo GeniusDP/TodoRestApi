@@ -7,11 +7,13 @@ import java.util.Optional;
 
 public interface TodoRepository {
 
-    Optional<List<Todo>> getAllTodos();
+    List<Todo> getAllTodos();
 
-    int updateTodo(long todoId, Optional<String> title, Optional<String> body);
+    long updateTodo(long todoId, Optional<String> title, Optional<String> body);
 
-    int deleteTodo(long todoId);
+    long deleteTodo(long todoId);
 
-    void saveTodo(String title, String body);
+    long saveTodo(String title, String body);
+
+
 }

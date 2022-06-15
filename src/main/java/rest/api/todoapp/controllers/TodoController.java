@@ -3,8 +3,9 @@ package rest.api.todoapp.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rest.api.todoapp.controllers.dto.TodoUpdateParameters;
-import rest.api.todoapp.controllers.services.TodoService;
+import rest.api.todoapp.exceptions.NoElementsException;
+import rest.api.todoapp.services.dto.request.TodoRequestDTO;
+import rest.api.todoapp.services.TodoService;
 import rest.api.todoapp.model.entities.Todo;
 
 import java.util.List;
@@ -17,29 +18,28 @@ public class TodoController {
     private TodoService service;
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Todo>> getAllTodos(){
+    public ResponseEntity<List<Todo>> getAllTodos() throws NoElementsException {
         return ResponseEntity.ok( service.getAllTodos() );
     }
 
     @PutMapping("/todos/{todoId}")
-    public ResponseEntity<String> updateTodoById(@PathVariable long todoId, TodoUpdateParameters todoUpdateParameters){
-        System.out.println(todoUpdateParameters.getTitle());
-        System.out.println(todoUpdateParameters.getBody());
-        int rowsEffected = service.updateTodoById(
-                todoId,
-                Optional.ofNullable(todoUpdateParameters.getTitle()),
-                Optional.ofNullable(todoUpdateParameters.getBody())
-        );
-        int statusCode = rowsEffected == 0 ? 204 : 200;
-        return ResponseEntity.status(statusCode).body(null);
+    public ResponseEntity<String> updateTodoById(@PathVariable long todoId,
+                                                 @RequestParam Optional<String> title,
+                                                 @RequestParam Optional<String> body){
+        String message = String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
+        return ResponseEntity.ok(message);
     }
-
 
     @DeleteMapping("/todos/{todoId}")
     public ResponseEntity<String> deleteTodoById(@PathVariable long todoId){
-        int rowsEffected = service.deleteTodoById(todoId);
-        int statusCode = rowsEffected == 0 ? 204 : 200;
-        return ResponseEntity.status(statusCode).body(null);
+        String message = String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
+        return ResponseEntity.ok( message );
+    }
+
+    @PostMapping("/todos")
+    public ResponseEntity<Long> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
+        long todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
+        return ResponseEntity.ok(todoId);
     }
 
 }
