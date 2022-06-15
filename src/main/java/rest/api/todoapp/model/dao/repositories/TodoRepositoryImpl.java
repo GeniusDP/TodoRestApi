@@ -10,6 +10,7 @@ import rest.api.todoapp.model.entities.Todo;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository("todoRepository")
 @Transactional
@@ -25,7 +26,7 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public long updateTodo(long todoId, Optional<String> title, Optional<String> body) {
+    public UUID updateTodo(UUID todoId, Optional<String> title, Optional<String> body) {
         String sqlTitle = "UPDATE sandbox.public.todos SET title = ? WHERE todo_id = ?";
         String sqlBody = "UPDATE sandbox.public.todos SET body = ? WHERE todo_id = ?";
 
@@ -38,14 +39,14 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public long deleteTodo(long todoId) {
+    public UUID deleteTodo(UUID todoId) {
         String sql = "DELETE FROM sandbox.public.todos WHERE todo_id = ?;";
         jdbcTemplate.update(sql, todoId);
         return todoId;
     }
 
     @Override
-    public long saveTodo(String title, String body) {
+    public UUID saveTodo(String title, String body) {
         String sql = "INSERT INTO sandbox.public.todos (title, body) VALUES (?, ?);";
         jdbcTemplate.update(sql, title, body);
         return getAllTodos().stream().filter( todo -> todo.getTitle().equals(title) ).findAny().get().getTodoId();

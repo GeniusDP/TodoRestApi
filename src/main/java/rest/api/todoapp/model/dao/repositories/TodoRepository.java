@@ -4,16 +4,17 @@ import rest.api.todoapp.model.entities.Todo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TodoRepository {
 
     List<Todo> getAllTodos();
 
-    long updateTodo(long todoId, Optional<String> title, Optional<String> body);
+    UUID updateTodo(UUID todoId, Optional<String> title, Optional<String> body);
 
-    long deleteTodo(long todoId);
+    UUID deleteTodo(UUID todoId);
 
-    long saveTodo(String title, String body);
+    UUID saveTodo(String title, String body);
 
 
 }

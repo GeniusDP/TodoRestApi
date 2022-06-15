@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Todo {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private long todoId;
+    private UUID todoId;
     private String title;
     private String body;
     private LocalDateTime creationDateTime;
@@ -25,7 +26,7 @@ public class Todo {
     }
 
 
-    public Todo(long todoId, String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
+    public Todo(UUID todoId, String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
         this.todoId = todoId;
         this.title = title;
         this.body = body;

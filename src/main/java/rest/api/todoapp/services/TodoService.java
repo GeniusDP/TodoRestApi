@@ -12,6 +12,7 @@ import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,15 +29,15 @@ public class TodoService {
         return todos;
     }
 
-    public long deleteTodoById(long todoId){
+    public UUID deleteTodoById(UUID todoId){
         return repository.deleteTodo(todoId);
     }
 
-    public long updateTodoById(long todoId, Optional<String> title, Optional<String> body) {
+    public UUID updateTodoById(UUID todoId, Optional<String> title, Optional<String> body) {
         return repository.updateTodo(todoId, title, body);
     }
 
-    public long saveTodoItem(String title, String body){
+    public UUID saveTodoItem(String title, String body){
         return repository.saveTodo(title, body);
     }
 

@@ -11,6 +11,7 @@ import rest.api.todoapp.model.entities.Todo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class TodoController {
@@ -29,7 +30,7 @@ public class TodoController {
     }
 
     @PutMapping("/todos/{todoId}")
-    public ResponseEntity<String> updateTodoById(@PathVariable long todoId,
+    public ResponseEntity<String> updateTodoById(@PathVariable UUID todoId,
                                                  @RequestParam Optional<String> title,
                                                  @RequestParam Optional<String> body){
         String message = String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
@@ -37,14 +38,14 @@ public class TodoController {
     }
 
     @DeleteMapping("/todos/{todoId}")
-    public ResponseEntity<String> deleteTodoById(@PathVariable long todoId){
+    public ResponseEntity<String> deleteTodoById(@PathVariable UUID todoId){
         String message = String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
         return ResponseEntity.ok( message );
     }
 
     @PostMapping("/todos")
-    public ResponseEntity<Long> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
-        long todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
+    public ResponseEntity<UUID> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
+        UUID todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
         return ResponseEntity.ok(todoId);
     }
 
