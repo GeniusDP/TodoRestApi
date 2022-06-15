@@ -25,7 +25,7 @@ public class AllTodosExtractor implements ResultSetExtractor<List<Todo>> {
             Todo todo = new Todo(todoId, todoTitle, todoBody, createdDateTime, lastUpdateDateTime);
             lst.add( todo );
         }
-        return lst.size()>0 ? lst : null;
+        return lst;
 
     }
 
