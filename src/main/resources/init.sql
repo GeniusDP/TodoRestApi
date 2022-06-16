@@ -1,7 +1,8 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 drop table if exists todos;
 create table todos
 (
-    todo_id bigserial,
+    todo_id uuid default uuid_generate_v4(),
     title text not null,
     body text not null,
     creation_date_time timestamp default now() not null,
