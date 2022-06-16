@@ -18,6 +18,11 @@ public class TodoController {
     @Autowired
     private TodoService service;
 
+    @GetMapping("/")
+    public String getHello(){
+        return "hello!";
+    }
+
     @GetMapping("/todos")
     public ResponseEntity<List<Todo>> getAllTodos() {
         return ResponseEntity.ok( service.getAllTodos() );
