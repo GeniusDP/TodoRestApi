@@ -19,14 +19,6 @@ public class TodoController {
     @Autowired
     private TodoService service;
 
-    @Value("${spring.datasource.url}")
-    private String url;
-
-    @GetMapping("/")
-    public String getHello(){
-        return url;
-    }
-
     @GetMapping("/todos")
     public ResponseEntity<List<Todo>> getAllTodos() {
         return ResponseEntity.ok( service.getAllTodos() );
