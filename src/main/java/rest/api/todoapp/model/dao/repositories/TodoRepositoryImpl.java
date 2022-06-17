@@ -17,8 +17,11 @@ import java.util.UUID;
 @Transactional
 public class TodoRepositoryImpl implements TodoRepository {
 
+    private final JdbcTemplate jdbcTemplate;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public TodoRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Todo> getAllTodos() {
