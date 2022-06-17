@@ -1,6 +1,7 @@
 package rest.api.todoapp.model.dao.repositories;
 
 import rest.api.todoapp.model.entities.Todo;
+import rest.api.todoapp.services.dto.request.TodoRequestDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ public interface TodoRepository {
 
     List<Todo> getAllTodos();
 
-    UUID updateTodo(UUID todoId, Optional<String> title, Optional<String> body);
+    Todo updateTodo(Todo todo);
 
     UUID deleteTodo(UUID todoId);
 

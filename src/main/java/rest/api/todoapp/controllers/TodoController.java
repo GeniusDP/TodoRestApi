@@ -44,8 +44,8 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}")
-    public String updateTodoById(@PathVariable UUID todoId, @RequestParam Optional<String> title, @RequestParam Optional<String> body){
-        return String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
+    public Todo updateTodoById(@PathVariable UUID todoId, TodoRequestDTO dto){
+        return service.updateTodoById(todoId, dto);
     }
 
     @DeleteMapping("/{todoId}")

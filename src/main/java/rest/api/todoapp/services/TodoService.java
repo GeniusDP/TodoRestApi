@@ -9,7 +9,9 @@ import rest.api.todoapp.exceptions.NotAllParametersInUrlException;
 import rest.api.todoapp.model.dao.repositories.TodoRepository;
 import rest.api.todoapp.model.entities.Todo;
 import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
+import rest.api.todoapp.services.dto.request.TodoRequestDTO;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +36,9 @@ public class TodoService {
         return repository.deleteTodo(todoId);
     }
 
-    public UUID updateTodoById(UUID todoId, Optional<String> title, Optional<String> body) {
-        return repository.updateTodo(todoId, title, body);
+    public Todo updateTodoById(UUID todoId, TodoRequestDTO dto) {
+        Todo todo = new Todo(todoId, dto.getTitle(), dto.getBody(), LocalDateTime.now(), LocalDateTime.now());
+        return repository.updateTodo(todo);
     }
 
     public UUID saveTodoItem(String title, String body){

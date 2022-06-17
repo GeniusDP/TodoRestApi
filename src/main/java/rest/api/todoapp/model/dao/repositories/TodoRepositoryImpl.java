@@ -8,6 +8,7 @@ import rest.api.todoapp.exceptions.NoSuchTodoException;
 import rest.api.todoapp.model.dao.extractors.AllTodosExtractor;
 import rest.api.todoapp.model.entities.Todo;
 
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,20 +31,18 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public UUID updateTodo(UUID todoId, Optional<String> title, Optional<String> body) {
+    public Todo updateTodo(final Todo todo) {
         String sqlTitle = "UPDATE todos SET title = ? WHERE todo_id = ?";
         String sqlBody = "UPDATE todos SET body = ? WHERE todo_id = ?";
         String sqlUpdateTime = "UPDATE todos SET last_update_date_time = ? WHERE todo_id = ?";
-
-        title.ifPresent(value -> jdbcTemplate.update(sqlTitle, value, todoId));
-        body.ifPresent(value -> jdbcTemplate.update(sqlBody, value, todoId));
-        int rowsEffected = jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todoId);
-
-        if( rowsEffected == 0 ){
-            throw new NoSuchTodoException("Error! There is now todo with such todoId!");
-        }
-
-        return todoId;
+        jdbcTemplate.update(sqlTitle, todo.getTitle());
+        jdbcTemplate.update(sqlBody, todo.getBody());
+        jdbcTemplate.update(sqlUpdateTime, todo.getLastUpdateDateTime());
+        jdbcTemplate.query("SELECT creation_date_time FROM todos WHERE todo_id = ?", (ResultSet rs)->{
+            rs.next();
+            todo.setCreationDateTime( rs.getTimestamp("creation_date_time").toLocalDateTime() );
+        });
+        return todo;
     }
 
     @Override
