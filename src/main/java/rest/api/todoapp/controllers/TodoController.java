@@ -23,36 +23,33 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Todo>> getAllTodos() {
-        return ResponseEntity.ok( service.getAllTodos() );
+    public List<Todo> getAllTodos() {
+        return service.getAllTodos();
     }
 
     @GetMapping("/{todoId}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable UUID todoId){
-        return ResponseEntity.ok( service.getTodoById(todoId) );
+    public Todo getTodoById(@PathVariable UUID todoId){
+        return service.getTodoById(todoId);
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<List<Todo>> getPaginatedTodoList(PaginationRequestTodoDTO paginationDTO){
-        return ResponseEntity.ok( service.getPaginatedTodoList(paginationDTO) );
+    public List<Todo> getPaginatedTodoList(PaginationRequestTodoDTO paginationDTO){
+        return service.getPaginatedTodoList(paginationDTO);
     }
 
     @PostMapping
-    public ResponseEntity<UUID> saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
-        UUID todoId = service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
-        return ResponseEntity.ok(todoId);
+    public UUID saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
+        return service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
     }
 
     @PutMapping("/{todoId}")
-    public ResponseEntity<String> updateTodoById(@PathVariable UUID todoId, @RequestParam Optional<String> title, @RequestParam Optional<String> body){
-        String message = String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
-        return ResponseEntity.ok(message);
+    public String updateTodoById(@PathVariable UUID todoId, @RequestParam Optional<String> title, @RequestParam Optional<String> body){
+        return String.format("todo with id = %s successfully updates", service.updateTodoById(todoId, title, body));
     }
 
     @DeleteMapping("/{todoId}")
-    public ResponseEntity<String> deleteTodoById(@PathVariable UUID todoId){
-        String message = String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
-        return ResponseEntity.ok( message );
+    public String deleteTodoById(@PathVariable UUID todoId){
+        return String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
     }
 
 }
