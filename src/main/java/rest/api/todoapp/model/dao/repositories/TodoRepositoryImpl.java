@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import rest.api.todoapp.exceptions.NoSuchTodoException;
 import rest.api.todoapp.model.dao.extractors.AllTodosExtractor;
+import rest.api.todoapp.model.dao.extractors.GetCreationDateRowMapper;
 import rest.api.todoapp.model.entities.Todo;
 
 import java.sql.ResultSet;
@@ -31,17 +32,19 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public Todo updateTodo(final Todo todo) {
+    public Todo updateTodo(Todo todo) {
         String sqlTitle = "UPDATE todos SET title = ? WHERE todo_id = ?";
         String sqlBody = "UPDATE todos SET body = ? WHERE todo_id = ?";
         String sqlUpdateTime = "UPDATE todos SET last_update_date_time = ? WHERE todo_id = ?";
-        jdbcTemplate.update(sqlTitle, todo.getTitle());
-        jdbcTemplate.update(sqlBody, todo.getBody());
-        jdbcTemplate.update(sqlUpdateTime, todo.getLastUpdateDateTime());
-        jdbcTemplate.query("SELECT creation_date_time FROM todos WHERE todo_id = ?", (ResultSet rs)->{
-            rs.next();
-            todo.setCreationDateTime( rs.getTimestamp("creation_date_time").toLocalDateTime() );
-        });
+        String sqlCreatingTime = "SELECT creation_date_time FROM todos WHERE todo_id = ?";
+
+        jdbcTemplate.update(sqlTitle, todo.getTitle(), todo.getTodoId());
+        jdbcTemplate.update(sqlBody, todo.getBody(), todo.getTodoId());
+        jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todo.getTodoId());
+
+        LocalDateTime creation_date_time = jdbcTemplate.query(sqlCreatingTime, new GetCreationDateRowMapper(), todo.getTodoId()).get(0);
+        todo.setCreationDateTime(creation_date_time);
+        todo.setLastUpdateDateTime(LocalDateTime.now());
         return todo;
     }
 

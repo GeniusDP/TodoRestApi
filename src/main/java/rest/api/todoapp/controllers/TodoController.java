@@ -2,7 +2,6 @@ package rest.api.todoapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
 import rest.api.todoapp.services.dto.request.TodoRequestDTO;
@@ -10,7 +9,6 @@ import rest.api.todoapp.services.TodoService;
 import rest.api.todoapp.model.entities.Todo;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -44,7 +42,7 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}")
-    public Todo updateTodoById(@PathVariable UUID todoId, TodoRequestDTO dto){
+    public Todo updateTodoById(@PathVariable UUID todoId, @RequestBody TodoRequestDTO dto){
         return service.updateTodoById(todoId, dto);
     }
 

@@ -1,7 +1,6 @@
 package rest.api.todoapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import rest.api.todoapp.exceptions.NoElementsException;
 import rest.api.todoapp.exceptions.NoSuchTodoException;
@@ -12,17 +11,18 @@ import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
 import rest.api.todoapp.services.dto.request.TodoRequestDTO;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
+    private final TodoRepository repository;
 
     @Autowired
-    private TodoRepository repository;
+    public TodoService(TodoRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Todo> getAllTodos() {
         List<Todo> todos = repository.getAllTodos();
@@ -37,6 +37,9 @@ public class TodoService {
     }
 
     public Todo updateTodoById(UUID todoId, TodoRequestDTO dto) {
+        if( !todoId.equals(dto.getTodoId()) ){
+            throw new NoSuchTodoException("todoId in path variable is not such as in request body");
+        }
         Todo todo = new Todo(todoId, dto.getTitle(), dto.getBody(), LocalDateTime.now(), LocalDateTime.now());
         return repository.updateTodo(todo);
     }
