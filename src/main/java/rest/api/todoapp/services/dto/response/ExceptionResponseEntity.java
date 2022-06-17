@@ -1,7 +1,6 @@
 package rest.api.todoapp.services.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
