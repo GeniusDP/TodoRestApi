@@ -1,6 +1,7 @@
 package rest.api.todoapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
@@ -48,6 +49,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteTodoById(@PathVariable UUID todoId){
         return String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
     }
