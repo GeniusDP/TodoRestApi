@@ -5,14 +5,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import rest.api.todoapp.exceptions.NoSuchTodoException;
-import rest.api.todoapp.model.dao.extractors.AllTodosExtractor;
+import rest.api.todoapp.model.dao.extractors.AllTodosRowMapper;
 import rest.api.todoapp.model.dao.extractors.GetCreationDateRowMapper;
 import rest.api.todoapp.model.entities.Todo;
 
-import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository("todoRepository")
@@ -28,7 +26,7 @@ public class TodoRepositoryImpl implements TodoRepository {
     @Override
     public List<Todo> getAllTodos() {
         String sql = "SELECT * FROM todos;";
-        return jdbcTemplate.query( sql, new AllTodosExtractor() );
+        return jdbcTemplate.query( sql, new AllTodosRowMapper() );
     }
 
     @Override
