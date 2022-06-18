@@ -13,13 +13,6 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NoElementsException.class)
-    public ResponseEntity<ExceptionResponseEntity> noElementsExceptionHandler(NoElementsException exception){
-        String comment = exception.getLocalizedMessage();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(new ExceptionResponseEntity(comment, LocalDateTime.now()));
-    }
-
     @ExceptionHandler(NoSuchTodoException.class)
     public ResponseEntity<ExceptionResponseEntity> noSuchTodoExceptionHandler(NoSuchTodoException e){
         String comment = e.getMessage();
@@ -27,13 +20,9 @@ public class GlobalExceptionHandler {
                 .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
     }
 
-
-
-
-
     @ExceptionHandler({DataAccessException.class, SQLException.class})
     public ResponseEntity<ExceptionResponseEntity> dataAccessExceptionHandler(DataAccessException exception){
-        String comment = "Error during data processing or accessing.";
+        String comment = "Error during data processing or accessing";
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
     }

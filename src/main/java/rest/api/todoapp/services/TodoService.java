@@ -27,7 +27,7 @@ public class TodoService {
     public List<Todo> getAllTodos() {
         List<Todo> todos = repository.getAllTodos();
         if( todos.isEmpty() ){
-            throw new NoElementsException("List of todos is empty!");
+            throw new NoSuchTodoException("List of todos is empty!");
         }
         return todos;
     }
@@ -63,7 +63,7 @@ public class TodoService {
     public List<Todo> getPaginatedTodoList(Long page, Long pageSize) {
         List<Todo> todos = getAllTodos().stream().skip((page - 1) * pageSize ).limit( pageSize ).collect(Collectors.toList());
         if( todos.isEmpty() ){
-            throw new NoElementsException("List of todos is empty!");
+            throw new NoSuchTodoException("List of todos is empty!");
         }
         return todos;
     }

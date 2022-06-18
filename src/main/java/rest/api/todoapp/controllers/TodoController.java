@@ -48,8 +48,8 @@ public class TodoController {
 
     @DeleteMapping("/{todoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteTodoById(@PathVariable UUID todoId){
-        return String.format( "todo with id = %s successfully deleted", service.deleteTodoById(todoId) );
+    public UUID deleteTodoById(@PathVariable UUID todoId){
+        return service.deleteTodoById(todoId);
     }
 
 }
