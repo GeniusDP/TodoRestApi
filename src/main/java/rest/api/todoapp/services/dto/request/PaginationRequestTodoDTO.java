@@ -1,15 +1,17 @@
 package rest.api.todoapp.services.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class PaginationRequestTodoDTO {
+
     @JsonProperty(required = true)
-    private Long page;
+    private Long page = 1L;
+
     @JsonProperty(required = true)
-    private Long pageSize;
+    private Long pageSize = 5L;
 
 }
