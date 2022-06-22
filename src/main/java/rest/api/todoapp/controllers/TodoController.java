@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/todos")
 public class TodoController {
     private final TodoService service;
@@ -23,7 +24,7 @@ public class TodoController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("")
     public List<Todo> getAllTodos() {
         return service.getAllTodos();
     }
@@ -38,7 +39,7 @@ public class TodoController {
         return service.getPaginatedTodoList(paginationDTO.getPage(), paginationDTO.getPageSize());
     }
 
-    @PostMapping
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Todo saveTodoItem(@Valid @RequestBody SaveTodoRequestDTO saveTodoRequestDTO){
         return service.saveTodoItem(saveTodoRequestDTO.getTitle(), saveTodoRequestDTO.getBody());
@@ -50,8 +51,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public UUID deleteTodoById(@PathVariable UUID todoId){
+    public Todo deleteTodoById(@PathVariable UUID todoId){
         return service.deleteTodoById(todoId);
     }
 

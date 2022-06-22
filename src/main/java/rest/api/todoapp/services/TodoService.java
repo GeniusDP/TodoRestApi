@@ -9,6 +9,7 @@ import rest.api.todoapp.dao.repositories.TodoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class TodoService {
         return todos;
     }
 
-    public UUID deleteTodoById(UUID todoId){
+    public Todo deleteTodoById(UUID todoId){
         return repository.deleteTodo(todoId);
     }
 
@@ -55,6 +56,10 @@ public class TodoService {
 
 
     public Todo getTodoById(UUID todoId) {
-        return repository.getTodoById(todoId);
+        Todo todoById = repository.getTodoById(todoId);
+        if( Objects.isNull(todoById) ){
+            throw new NoSuchTodoException("there is no such todo");
+        }
+        return todoById;
     }
 }
