@@ -47,7 +47,7 @@ public class TodoService {
     }
 
     public List<Todo> getPaginatedTodoList(Long page, Long pageSize) {
-        List<Todo> todos = getAllTodos().stream().skip((page - 1) * pageSize ).limit( pageSize ).collect(Collectors.toList());
+        List<Todo> todos = repository.getPaginatedTodoList(page, pageSize);
         if( todos.isEmpty() ){
             throw new NoSuchTodoException("List of todos is empty!");
         }

@@ -17,4 +17,5 @@ public interface TodoRepository {
 
     Todo getTodoById(UUID todoId);
 
+    List<Todo> getPaginatedTodoList(Long page, Long pageSize);
 }

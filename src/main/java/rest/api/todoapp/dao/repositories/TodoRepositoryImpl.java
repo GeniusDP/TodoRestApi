@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import rest.api.todoapp.dao.extractors.AllTodosRowMapper;
-import rest.api.todoapp.dao.extractors.GetCreationDateRowMapper;
 import rest.api.todoapp.entities.Todo;
 import rest.api.todoapp.exceptions.NoSuchTodoException;
 
@@ -84,15 +83,6 @@ public class TodoRepositoryImpl implements TodoRepository {
         properties.put("last_update_date_time", LocalDateTime.now());
         KeyHolder keyHolder = simpleJdbcInsert.executeAndReturnKeyHolder(properties);
         return getTodoById( keyHolder.getKeyAs(UUID.class) );
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update(connection -> {
-//            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            ps.setString(1, title);
-//            ps.setString(2, body);
-//            return ps;
-//        }, keyHolder);
-//        return getTodoById( keyHolder.getKeyAs(UUID.class) );
     }
 
     @Override
@@ -100,6 +90,12 @@ public class TodoRepositoryImpl implements TodoRepository {
         String sql = "SELECT * FROM todos WHERE todo_id = ?;";
         List<Todo> todoList = jdbcTemplate.query(sql, new AllTodosRowMapper(), todoId);
         return todoList.isEmpty() ? null : todoList.get(0);
+    }
+
+    @Override
+    public List<Todo> getPaginatedTodoList(Long page, Long pageSize) {
+        String sql = "SELECT * FROM todos OFFSET ? LIMIT ?;";
+        return jdbcTemplate.query(sql, new AllTodosRowMapper(), (page - 1) * pageSize, pageSize);
     }
 
 }
