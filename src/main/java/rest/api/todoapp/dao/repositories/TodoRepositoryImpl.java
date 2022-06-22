@@ -18,7 +18,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Repository("todoRepository")
@@ -77,22 +79,28 @@ public class TodoRepositoryImpl implements TodoRepository {
         return todoId;
     }
 
-//        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-//                .withTableName("todos").usingGeneratedKeyColumns("todo_id");
 
     @Override
     public Todo saveTodo(String title, String body) {
-        String sql = "INSERT INTO todos (title, body) VALUES (?, ?) RETURNING todo_id;";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, title);
-            ps.setString(2, body);
-            return ps;
-        }, keyHolder);
-
-        return getTodoById(keyHolder.getKeyAs(UUID.class));
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("todos")
+                .usingGeneratedKeyColumns("todo_id");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("title", title);
+        properties.put("body", body);
+        properties.put("creation_date_time", LocalDateTime.now());
+        properties.put("last_update_date_time", LocalDateTime.now());
+        KeyHolder keyHolder = simpleJdbcInsert.executeAndReturnKeyHolder(properties);
+        return getTodoById( keyHolder.getKeyAs(UUID.class) );
+//        KeyHolder keyHolder = new GeneratedKeyHolder();
+//
+//        jdbcTemplate.update(connection -> {
+//            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//            ps.setString(1, title);
+//            ps.setString(2, body);
+//            return ps;
+//        }, keyHolder);
+//        return getTodoById( keyHolder.getKeyAs(UUID.class) );
     }
 
     @Override
