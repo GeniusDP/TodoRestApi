@@ -1,7 +1,7 @@
-package rest.api.todoapp.model.dao.extractors;
+package rest.api.todoapp.dao.extractors;
 
 import org.springframework.jdbc.core.RowMapper;
-import rest.api.todoapp.model.entities.Todo;
+import rest.api.todoapp.entities.Todo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

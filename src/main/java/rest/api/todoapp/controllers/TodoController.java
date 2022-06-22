@@ -3,11 +3,13 @@ package rest.api.todoapp.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import rest.api.todoapp.services.dto.request.PaginationRequestTodoDTO;
-import rest.api.todoapp.services.dto.request.TodoRequestDTO;
+import rest.api.todoapp.dto.request.PaginationRequestTodoDTO;
+import rest.api.todoapp.dto.request.SaveTodoRequestDTO;
+import rest.api.todoapp.dto.request.UpdateTodoRequestDTO;
 import rest.api.todoapp.services.TodoService;
-import rest.api.todoapp.model.entities.Todo;
+import rest.api.todoapp.entities.Todo;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,23 +28,24 @@ public class TodoController {
         return service.getAllTodos();
     }
 
-    @GetMapping("/{todoId}")
-    public Todo getTodoById(@PathVariable UUID todoId){
+    @GetMapping("/{todoId}")//getAllTodos надо убрать
+    public Todo getTodoById(@Valid @PathVariable UUID todoId){
         return service.getTodoById(todoId);
     }
 
-    @GetMapping("/paginated")
-    public List<Todo> getPaginatedTodoList(PaginationRequestTodoDTO paginationDTO){
-        return service.getPaginatedTodoList(paginationDTO);
+    @GetMapping("/paginated")//getAllTodos надо убрать
+    public List<Todo> getPaginatedTodoList(@Valid PaginationRequestTodoDTO paginationDTO){
+        return service.getPaginatedTodoList(paginationDTO.getPage(), paginationDTO.getPageSize());
     }
 
     @PostMapping
-    public UUID saveTodoItem(@RequestBody TodoRequestDTO todoRequestDTO){
-        return service.saveTodoItem(todoRequestDTO.getTitle(), todoRequestDTO.getBody());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Todo saveTodoItem(@Valid @RequestBody SaveTodoRequestDTO saveTodoRequestDTO){
+        return service.saveTodoItem(saveTodoRequestDTO.getTitle(), saveTodoRequestDTO.getBody());
     }
 
     @PutMapping("/{todoId}")
-    public Todo updateTodoById(@PathVariable UUID todoId, @RequestBody TodoRequestDTO dto){
+    public Todo updateTodoById(@Valid @PathVariable UUID todoId, @RequestBody UpdateTodoRequestDTO dto){
         return service.updateTodoById(todoId, dto);
     }
 

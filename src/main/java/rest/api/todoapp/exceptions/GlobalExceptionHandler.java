@@ -1,44 +1,44 @@
 package rest.api.todoapp.exceptions;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import rest.api.todoapp.services.dto.response.ExceptionResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import rest.api.todoapp.dto.response.ValidationExceptionResponse;
+import rest.api.todoapp.exceptions.validation.Violation;
+import rest.api.todoapp.dto.response.ExceptionResponseEntity;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ControllerAdvice
+@ResponseBody
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchTodoException.class)
-    public ResponseEntity<ExceptionResponseEntity> noSuchTodoExceptionHandler(NoSuchTodoException e){
-        String comment = e.getMessage();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponseEntity noSuchTodoExceptionHandler(NoSuchTodoException e){
+        return new ExceptionResponseEntity("No such todo found", LocalDateTime.now());
     }
 
     @ExceptionHandler({DataAccessException.class, SQLException.class})
-    public ResponseEntity<ExceptionResponseEntity> dataAccessExceptionHandler(DataAccessException exception){
-        String comment = "Error during data processing or accessing";
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponseEntity dataAccessExceptionHandler(){
+        String comment = "Error from database. (For example FK duplicate. Also title should be unique.)";
+        return new ExceptionResponseEntity(comment, LocalDateTime.now());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionResponseEntity> illegalArgumentAndNullPointerExceptionHandler(){
-        String comment = "You cannot pass such values of parameters!";
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
+    @ExceptionHandler({BindException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ValidationExceptionResponse methodArgumentNotValidExceptionHandle(BindException exception){
+        List<Violation> violations = exception.getAllErrors().stream().map(objectError -> {
+            return new Violation(((FieldError) objectError).getField(), objectError.getDefaultMessage());
+        }).toList();
+        return new ValidationExceptionResponse(violations);
     }
 
-    @ExceptionHandler(NotAllParametersInUrlException.class)
-    public ResponseEntity<ExceptionResponseEntity> notAllParametersInUrlExceptionHandler(NotAllParametersInUrlException e){
-        String comment = e.getMessage();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body( new ExceptionResponseEntity(comment, LocalDateTime.now()) );
-    }
 
 }

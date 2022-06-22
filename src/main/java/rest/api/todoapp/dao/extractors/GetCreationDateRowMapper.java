@@ -1,4 +1,4 @@
-package rest.api.todoapp.model.dao.extractors;
+package rest.api.todoapp.dao.extractors;
 
 import org.springframework.jdbc.core.RowMapper;
 

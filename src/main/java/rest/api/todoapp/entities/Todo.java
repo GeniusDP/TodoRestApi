@@ -1,4 +1,4 @@
-package rest.api.todoapp.model.entities;
+package rest.api.todoapp.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

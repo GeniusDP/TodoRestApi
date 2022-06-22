@@ -1,6 +1,6 @@
-package rest.api.todoapp.model.dao.repositories;
+package rest.api.todoapp.dao.repositories;
 
-import rest.api.todoapp.model.entities.Todo;
+import rest.api.todoapp.entities.Todo;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +13,8 @@ public interface TodoRepository {
 
     UUID deleteTodo(UUID todoId);
 
-    UUID saveTodo(String title, String body);
+    Todo saveTodo(String title, String body);
 
+    Todo getTodoById(UUID todoId);
 
 }

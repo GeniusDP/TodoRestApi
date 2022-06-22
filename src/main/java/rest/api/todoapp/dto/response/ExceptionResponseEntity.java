@@ -1,18 +1,18 @@
-package rest.api.todoapp.services.dto.response;
+package rest.api.todoapp.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public class ExceptionResponseEntity {
-    @JsonProperty(required = true)
+@Data
+public final class ExceptionResponseEntity {
     private final String message;
-    @JsonProperty(required = true)
     private final LocalDateTime exceptionCauseTime;
 
     public ExceptionResponseEntity(String message, LocalDateTime exceptionCauseTime) {
         this.message = message;
         this.exceptionCauseTime = exceptionCauseTime;
     }
+
 
 }
