@@ -50,6 +50,11 @@ public class TodoRepositoryImpl implements TodoRepository {
             jdbcTemplate.update("UPDATE todos SET body = ? WHERE todo_id = ?;", todo.getBody(), todo.getTodoId());
         }
 
+        if( todo.getDone() != null ){
+            wasUpdated = true;
+            jdbcTemplate.update("UPDATE todos SET done = ? WHERE todo_id = ?;", todo.getDone(), todo.getTodoId());
+        }
+
         if(wasUpdated){
             String sqlUpdateTime = "UPDATE todos SET last_update_date_time = ? WHERE todo_id = ?";
             jdbcTemplate.update(sqlUpdateTime, LocalDateTime.now(), todo.getTodoId());

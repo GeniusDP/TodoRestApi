@@ -17,6 +17,8 @@ public class Todo {
     private UUID todoId;
     private String title;
     private String body;
+
+    private Boolean done = false;
     private LocalDateTime creationDateTime;
     private LocalDateTime lastUpdateDateTime;
 
