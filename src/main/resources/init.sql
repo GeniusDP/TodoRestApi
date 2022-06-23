@@ -5,6 +5,7 @@ create table todos
     todo_id uuid default uuid_generate_v4(),
     title text not null,
     body text not null,
+    done bool not null default false,
     creation_date_time timestamp default now() not null,
     last_update_date_time timestamp default now() not null
 );
