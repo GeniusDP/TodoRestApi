@@ -37,7 +37,7 @@ public class TodoService {
         if( !todoId.equals( dto.getTodoId() ) ){
             throw new NoSuchTodoException("todoId in path variable is not such as in request body");
         }
-        Todo todo = new Todo(todoId, dto.getTitle(), dto.getBody(), LocalDateTime.now(), LocalDateTime.now());
+        Todo todo = new Todo(todoId, dto.getTitle(), dto.getBody(), dto.getDone(), LocalDateTime.now(), LocalDateTime.now());
         return repository.updateTodo(todo);
     }
 

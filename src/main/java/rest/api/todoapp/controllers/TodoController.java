@@ -34,17 +34,6 @@ public class TodoController {
         return service.getTodoById(todoId);
     }
 
-    @GetMapping("/{todoId}/title")
-    public String getTitleOfTodoById(@PathVariable UUID todoId){
-        return service.getTodoById(todoId).getTitle();
-    }
-
-    @GetMapping("/{todoId}/body")
-    public String getBodyOfTodoById(@PathVariable UUID todoId){
-        return service.getTodoById(todoId).getBody();
-    }
-
-
     @GetMapping("/paginated")
     public List<Todo> getPaginatedTodoList(@Valid PaginationRequestTodoDTO paginationDTO){
         return service.getPaginatedTodoList(paginationDTO.getPage(), paginationDTO.getPageSize());
@@ -57,7 +46,7 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}")
-    public Todo updateTodoById(@PathVariable UUID todoId, @RequestBody UpdateTodoRequestDTO dto){
+    public Todo updateTodoById(@PathVariable UUID todoId, @Valid @RequestBody UpdateTodoRequestDTO dto){
         return service.updateTodoById(todoId, dto);
     }
 

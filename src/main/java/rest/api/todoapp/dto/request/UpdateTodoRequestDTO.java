@@ -11,12 +11,13 @@ public class UpdateTodoRequestDTO {
     private final UUID todoId;
     private final String title;
     private final String body;
+    private final Boolean done;
 
-
-    public UpdateTodoRequestDTO(UUID todoId, String title, String body) {
+    public UpdateTodoRequestDTO(UUID todoId, String title, String body, Boolean done) {
         this.todoId = todoId;
         this.title = title;
         this.body = body;
+        this.done = done;
     }
 
 }
