@@ -3,16 +3,14 @@ package rest.api.todoapp.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Todo {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -21,10 +19,6 @@ public class Todo {
     private String body;
     private LocalDateTime creationDateTime;
     private LocalDateTime lastUpdateDateTime;
-
-    public Todo() {
-    }
-
 
     public Todo(UUID todoId, String title, String body, LocalDateTime creationDateTime, LocalDateTime lastUpdateDateTime) {
         this.todoId = todoId;
