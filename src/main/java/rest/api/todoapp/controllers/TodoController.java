@@ -10,7 +10,6 @@ import rest.api.todoapp.services.TodoService;
 import rest.api.todoapp.entities.Todo;
 
 import javax.validation.Valid;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,11 +22,6 @@ public class TodoController {
     @Autowired
     public TodoController(TodoService service) {
         this.service = service;
-    }
-
-    @GetMapping("/time-test")
-    public LocalTime getCurrentTime(){
-        return LocalTime.now();
     }
 
     @GetMapping("/{todoId}")
