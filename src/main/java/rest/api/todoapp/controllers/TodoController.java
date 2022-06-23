@@ -57,7 +57,7 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}")
-    public Todo updateTodoById(@PathVariable UUID todoId, @RequestBody UpdateTodoRequestDTO dto){
+    public Todo updateTodoById(@PathVariable UUID todoId, @Valid @RequestBody UpdateTodoRequestDTO dto){
         return service.updateTodoById(todoId, dto);
     }
 
