@@ -11,8 +11,4 @@ public class TodoAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TodoAppApplication.class, args);
 	}
-	@PostConstruct
-	public void init(){
-		TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
-	}
 }
