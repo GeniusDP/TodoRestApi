@@ -11,7 +11,7 @@ public interface TodoRepository {
 
     Todo updateTodo(Todo todo);
 
-    Todo deleteTodo(UUID todoId);
+    void deleteTodo(UUID todoId);
 
     Todo saveTodo(String title, String body);
 
