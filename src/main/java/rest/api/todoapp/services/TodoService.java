@@ -26,14 +26,6 @@ public class TodoService {
         this.repository = repository;
     }
 
-    public List<Todo> getAllTodos() {
-        List<Todo> todos = repository.findAll();
-        if( !todos.isEmpty() ){
-            return todos;
-        }
-        throw new NoSuchTodoException("list of todos is empty");
-    }
-
     public void deleteTodoById(UUID todoId){
         if( repository.findById(todoId).isPresent() ){
             repository.deleteById(todoId);
