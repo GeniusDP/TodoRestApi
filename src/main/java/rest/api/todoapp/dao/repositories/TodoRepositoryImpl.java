@@ -66,13 +66,11 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public Todo deleteTodo(UUID todoId) {
-        Todo todoReturning = getTodoById(todoId);
+    public void deleteTodo(UUID todoId) {
         String sql = "DELETE FROM todos WHERE todo_id = ?;";
         if( jdbcTemplate.update(sql, todoId) == 0 ){
             throw new NoSuchTodoException("Error! There is now todo with such todoId!");
         }
-        return todoReturning;
     }
 
 

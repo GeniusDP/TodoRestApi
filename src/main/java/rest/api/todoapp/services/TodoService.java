@@ -29,8 +29,8 @@ public class TodoService {
         return todos;
     }
 
-    public Todo deleteTodoById(UUID todoId){
-        return repository.deleteTodo(todoId);
+    public void deleteTodoById(UUID todoId){
+        repository.deleteTodo(todoId);
     }
 
     public Todo updateTodoById(UUID todoId, UpdateTodoRequestDTO dto) {
