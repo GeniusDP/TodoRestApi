@@ -16,6 +16,6 @@ public interface TodoRepository extends JpaRepository<Todo, UUID> {
     @Transactional
     @Query(value = "insert into sandbox.public.todos(todo_id, title, body, done, creation_date_time, last_update_date_time) " +
             "VALUES (:todoId, :title, :body, false, :creationDateTime, :creationDateTime)", nativeQuery=true)
-    int saveWithProvidedId_Native(@Param("todoId") UUID todoId, @Param("title") String title, @Param("body") String body, @Param("creationDateTime") LocalDateTime creationDateTime);
+    void saveWithProvidedId_Native(@Param("todoId") UUID todoId, @Param("title") String title, @Param("body") String body, @Param("creationDateTime") LocalDateTime creationDateTime);
 
 }

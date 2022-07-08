@@ -1,6 +1,9 @@
 package rest.api.todoapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import rest.api.todoapp.dao.TodoRepository;
 import rest.api.todoapp.dto.request.UpdateTodoRequestDTO;
@@ -80,10 +83,13 @@ public class TodoService {
         return repository.save(todo);
     }
 
-    public List<Todo> getPaginatedTodoList(Long page, Long pageSize) {
-        List<Todo> todos = repository.findAll();
-        if( !todos.isEmpty() ){
-            return todos;
+    public List<Todo> getPaginatedTodoList(Integer page, Integer pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "creationDateTime");
+        int jpaPageNum = page - 1;
+        int jpaPageSize = pageSize;
+        Page<Todo> todosPage = repository.findAll(PageRequest.of(jpaPageNum, jpaPageSize, sort));
+        if( !todosPage.isEmpty() ){
+            return todosPage.toList();
         }
         throw new NoSuchTodoException("list of todos is empty");
     }

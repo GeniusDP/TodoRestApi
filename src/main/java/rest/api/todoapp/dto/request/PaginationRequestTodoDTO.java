@@ -9,9 +9,9 @@ import javax.validation.constraints.Min;
 public class PaginationRequestTodoDTO {
 
     @Min(value = 1, message = "page should be bigger or equal to 1")
-    private Long page = 1L;
+    private Integer page = 1;
 
     @Range(min = 5, max = 200, message = "pageSuze should be from 5 to 200")
-    private Long pageSize = 5L;
+    private Integer pageSize = 5;
 
 }
