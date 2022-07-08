@@ -19,13 +19,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchTodoException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponseEntity noSuchTodoExceptionHandler(NoSuchTodoException e){
-        return new ExceptionResponseEntity("No such todo found", LocalDateTime.now());
+        return new ExceptionResponseEntity("No such todo found: " + e.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(MissedRequiredArgumentsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponseEntity lackOfParametersToSaveTodoExceptionHandler(MissedRequiredArgumentsException e){
+        return new ExceptionResponseEntity("Not all required arguments are present: " + e.getMessage(),
+                LocalDateTime.now());
+    }
+
 
     @ExceptionHandler({DataAccessException.class, SQLException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponseEntity dataAccessExceptionHandler(){
-        String comment = "Error from database. (For example FK duplicate. Also title should be unique.)";
+        String comment = "Error from database (for example FK duplicate; also title should be unique)";
         return new ExceptionResponseEntity(comment, LocalDateTime.now());
     }
 
