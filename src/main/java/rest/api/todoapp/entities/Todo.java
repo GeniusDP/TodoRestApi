@@ -3,6 +3,7 @@ package rest.api.todoapp.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,37 +12,46 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static rest.api.todoapp.Constants.SwaggerDescriptions.*;
+
 @Getter
 @Entity
-@Table(name = "todos")
 @NoArgsConstructor
+@Table(name = "todos")
+@Schema(description = TODO)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Todo {
 
     @Id
     @GeneratedValue
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "todo_id")
+    @Schema(description = TODO_ID)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID todoId;
 
-    @Column(name = "title")
     @Setter
+    @Column(name = "title")
+    @Schema(description = TITLE)
     private String title;
 
-    @Column (name = "body")
     @Setter
+    @Column (name = "body")
+    @Schema(description = BODY)
     private String body;
 
-    @Column(name = "done")
     @Setter
+    @Column(name = "done")
+    @Schema(description = DONE_STATUS)
     private Boolean done = false;
 
-    @Column(name = "creation_date_time")
     @CreationTimestamp
+    @Column(name = "creation_date_time")
+    @Schema(description = CREATION_TIME)
     private LocalDateTime creationDateTime;
 
-    @Column(name = "last_update_date_time")
     @UpdateTimestamp
+    @Column(name = "last_update_date_time")
+    @Schema(description = LAST_UPDATE_TIME)
     private LocalDateTime lastUpdateDateTime;
 
     public Todo(String title, String body, Boolean done) {
