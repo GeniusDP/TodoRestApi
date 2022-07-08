@@ -50,10 +50,5 @@ public class Todo {
         this.done = done;
     }
 
-    public Todo(UUID todoId, String title, String body, Boolean done) {
-        this.todoId = todoId;
-        this.title = title;
-        this.body = body;
-        this.done = done;
-    }
+
 }
