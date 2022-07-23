@@ -16,7 +16,7 @@ public class PaginationRequestTodoDTO {
     private Integer page = 1;
 
     @Min(value = 5, message = "pageSuze should be bigger or equals to 5")
-    @Max(value = 200, message = "pageSuze should be less or equals to 200")
+    @Max(value = 30, message = "pageSuze should be less or equals to 30")
     @Schema(description = PAGE_SIZE)
     private Integer pageSize = 5;
 

@@ -17,6 +17,7 @@ import static rest.api.todoapp.Constants.SwaggerDescriptions.*;
 @Getter
 @Entity
 @NoArgsConstructor
+@ToString
 @Table(name = "todos")
 @Schema(description = TODO)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

@@ -37,5 +37,6 @@ public class Constants {
     public static class Informer {
         public static final String HTTP_STATUS_OK = "200";
         public static final String HTTP_STATUS_NO_CONTENT = "204";
+        public static final String HTTP_STATUS_CREATED = "201";
     }
 }

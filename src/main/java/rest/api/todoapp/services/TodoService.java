@@ -8,13 +8,9 @@ import org.springframework.stereotype.Service;
 import rest.api.todoapp.dao.TodoRepository;
 import rest.api.todoapp.dto.request.UpdateTodoRequestDTO;
 import rest.api.todoapp.entities.Todo;
-import rest.api.todoapp.exceptions.MissedRequiredArgumentsException;
 import rest.api.todoapp.exceptions.NoSuchTodoException;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.UUID;
 
 @Service
@@ -40,21 +36,11 @@ public class TodoService {
         }
         Optional<Todo> todo = repository.findById(todoId);
         if( todo.isPresent() ){
-            return repository.save(updateTodoEntity(todo.get(), dto));
+            Todo saveTodo = repository.save(updateTodoEntity(todo.get(), dto));
+            System.out.println(saveTodo);
+            return saveTodo;
         }
-        return saveIfNotExistingEntityUpdated(todoId, dto.getTitle(), dto.getBody());
-    }
-
-    private Todo saveIfNotExistingEntityUpdated(UUID todoId, String title, String body) {
-        if( title != null && body != null ){
-            repository.saveWithProvidedId_Native(todoId, title, body, LocalDateTime.now());
-            return this.getTodoById(todoId);
-        }
-        String message = new StringJoiner(", ", "missed arguments: {", "}")
-                .add(title == null ? "title" : "")
-                .add(body == null ? "body" : "")
-                .toString();
-        throw new MissedRequiredArgumentsException(message);
+        return null;
     }
 
     private Todo updateTodoEntity(Todo todo, UpdateTodoRequestDTO dto) {
@@ -75,15 +61,9 @@ public class TodoService {
         return repository.save(todo);
     }
 
-    public List<Todo> getPaginatedTodoList(Integer page, Integer pageSize) {
+    public Page<Todo> getPaginatedTodoList(Integer page, Integer pageSize) {
         Sort sort = Sort.by(Sort.Direction.DESC, "creationDateTime");
-        int jpaPageNum = page - 1;
-        int jpaPageSize = pageSize;
-        Page<Todo> todosPage = repository.findAll(PageRequest.of(jpaPageNum, jpaPageSize, sort));
-        if( !todosPage.isEmpty() ){
-            return todosPage.toList();
-        }
-        throw new NoSuchTodoException("list of todos is empty");
+        return repository.findAll(PageRequest.of(page-1, pageSize, sort));
     }
 
     public Todo getTodoById(UUID todoId) {
